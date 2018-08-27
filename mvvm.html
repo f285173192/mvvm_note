@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MVVM</title>
+</head>
+<body>
+
+<div id="mvvm-app">
+    <input type="text" v-model="someStr">
+    <input type="text" v-model="child.someStr">
+    <!-- <p v-class="className" class="abc">
+        {{someStr}}
+        <span v-text="child.someStr"></span>
+    </p> -->
+    <p>{{getHelloWord}}</p>
+    <p v-html="htmlStr"></p>
+    <button v-on:click="clickBtn">change model</button>
+</div>
+
+<script src="http://cdn.bootcss.com/vue/1.0.25/vue.js"></script>
+<script src="./js/observer.js"></script><!--负责监听源数据所有属性，一旦发生变化，通知订阅者更新视图-->
+<script src="./js/watcher.js"></script><!--充当数据更新的订阅者，每一个属性的变化都会通知它，在compile阶段实例化并注入回调函数-->
+<script src="./js/compile.js"></script><!--负责解析模板指令，不同的指令绑定不同的处理回调及视图更新方法-->
+<script src="./js/mvvm.js"></script><!--入口-->
+<script>
+   // console.log(document.all);
+    var vm = new MVVM({
+        el: '#mvvm-app',
+        data: {
+            someStr: 'hello ',
+            //className: 'btn',
+            htmlStr: '<span style="color: #f00;">red</span>',
+            child: {
+                someStr: 'World !'
+            }
+        },
+
+        computed: {
+            getHelloWord: function() {
+                return this.someStr + this.child.someStr;
+            }
+        },
+
+        methods: {
+            clickBtn: function(e) {
+               // console.log(this.child.someStr);
+                var randomStrArr = ['childOne', 'childTwo', 'childThree'];
+                this.child.someStr = randomStrArr[parseInt(Math.random() * 3)]; //舍一取整
+                //console.log(parseInt(Math.random() * 3));
+                
+            }
+        }
+        
+    });
+   // console.log(typeof(vm.$watch));
+    // vm.$watch('child.someStr', function() {
+    //     console.log(arguments);
+    // });
+    
+</script>
+
+</body>
+</html>
