@@ -1,6 +1,8 @@
 function Observer(data) {//构造函数
     this.data = data;
+    //console.log(this.data);//Object { someStr: "hello ", htmlStr: "<span style=\"color: #f00;\">red</span>", child: {…} }
     this.walk(data);
+    //console.log(Dep.target);null
 }
 
 Observer.prototype = {
@@ -22,11 +24,13 @@ Observer.prototype = {
        // console.log(val);
         var dep = new Dep();//dep为添加订阅者，
         var childObj = observe(val);// 监听子属性
-        Object.defineProperty(data, key, {
+        
+        Object.defineProperty(data, key, {//Object.defineProperty() 方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象。
             enumerable: true, // 可枚举
             configurable: false, // 不能再define 当且仅当该属性的 configurable 为 true 时，
             //该属性描述符才能够被改变，同时该属性也能从对应的对象上被删除。默认为 false。
             get: function() {
+                //console.log(Dep.target);//Object { cb: bind(), vm: {…}, expOrFn: "someStr", depIds: {}, getter: parseGetter() }
                 if (Dep.target) {
                     dep.depend();
                 }
@@ -70,7 +74,9 @@ Dep.prototype = {
     },
 
     depend: function() {
+       // console.log(this);//Object { id: 0, subs: [] }
         Dep.target.addDep(this);//Dep.target Watcher的实例
+        //console.log(Dep.target);//Object { cb: bind(), vm: {…}, expOrFn: "someStr", depIds: Object(1), getter: parseGetter() }
     },
 
     removeSub: function(sub) {

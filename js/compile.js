@@ -18,7 +18,7 @@ Compile.prototype = {
         while (child = el.firstChild) { //把el中的第一个节点赋值给变量child
             fragment.appendChild(child);
         }
-
+       //console.log(fragment);//DocumentFragment(13) [ #text, input, #text, input, #text, <!--  <p v-class="cl…pan>\n    </p>  -->, #text, p, #text, p, … ]
         return fragment;
     },
 
@@ -29,6 +29,7 @@ Compile.prototype = {
     compileElement: function(el) { //解析节点
         var childNodes = el.childNodes,
             me = this;
+            //console.log(childNodes);//NodeList(13) [ #text, input, #text, input, #text, <!--  <p v-class="cl…pan>\n    </p>  -->, #text, p, #text, p, … ]
             // arr={0:"a",1:"b",2:"c",length:3};
             // console.log(Array.from(arr));//没有length返回空数组 
            // console.log(childNodes);   //输出NodeList(13) [ #text, input, #text, input, #text, <!--  <p v-class="cl…pan>\n    </p>  -->, #text, p, #text, p, … ]  
@@ -56,12 +57,13 @@ Compile.prototype = {
     compile: function(node) {
         var nodeAttrs = node.attributes,
             me = this;
-
+//console.log(nodeAttrs);//NamedNodeMap [ v-model="someStr", type="text" ]//NamedNodeMap [ v-model="child.someStr", type="text" ]
         [].slice.call(nodeAttrs).forEach(function(attr) {
             var attrName = attr.name;
             if (me.isDirective(attrName)) {
                 var exp = attr.value;
                 var dir = attrName.substring(2);
+      // console.log(exp);//someStr         
                 // 事件指令
                 if (me.isEventDirective(dir)) {
                     compileUtil.eventHandler(node, me.$vm, exp, dir);
@@ -111,7 +113,7 @@ var compileUtil = {
 
     model: function(node, vm, exp) {
         this.bind(node, vm, exp, 'model');
-       console.log(node);
+      // console.log(node);//<input v-model="someStr" type="text">
         var me = this,
             val = this._getVMVal(vm, exp);
         node.addEventListener('input', function(e) {
@@ -131,6 +133,7 @@ var compileUtil = {
 
     bind: function(node, vm, exp, dir) {
         var updaterFn = updater[dir + 'Updater'];
+       // console.log(updaterFn);//function modelUpdater()
 
         updaterFn && updaterFn(node, this._getVMVal(vm, exp));
 

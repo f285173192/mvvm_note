@@ -1,7 +1,9 @@
 function Watcher(vm, expOrFn, cb) {
     this.cb = cb;
+   // console.log(this.cb);//function bind()
     this.vm = vm;
     this.expOrFn = expOrFn;
+   // console.log(expOrFn);//someStr child.someStr getHelloWord htmlStr
     this.depIds = {};
 
     if (typeof expOrFn === 'function') {
