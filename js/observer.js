@@ -81,8 +81,10 @@ Dep.prototype = {
     },
 
     notify: function() {
-        this.subs.forEach(function(sub) {
-            
+        this.subs.forEach(function(sub) {//必需。当前元素
+            // console.log(sub);
+            // //Object { cb: bind(), vm: {…}, expOrFn: "child.someStr", depIds: {…}, getter: parseGetter(), value: "World !" }
+            // Object { cb: bind(), vm: {…}, expOrFn: "getHelloWord", depIds: {…}, getter: parseGetter(), value: "hello World !" }
             sub.update();
         });
     }

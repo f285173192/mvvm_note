@@ -29,8 +29,13 @@ Compile.prototype = {
     compileElement: function(el) { //解析节点
         var childNodes = el.childNodes,
             me = this;
-     //console.log([].slice.call(childNodes));
+            // arr={0:"a",1:"b",2:"c",length:3};
+            // console.log(Array.from(arr));//没有length返回空数组 
+           // console.log(childNodes);   //输出NodeList(13) [ #text, input, #text, input, #text, <!--  <p v-class="cl…pan>\n    </p>  -->, #text, p, #text, p, … ]  
+     // console.log(Array.slice.call(childNodes));//把childNodes对象转换成数组，目的是将arguments对象的数组提出来转化为数组，arguments本身并不是数组而是对象 
         [].slice.call(childNodes).forEach(function(node) {
+            //es6 Array.from(childNodes)
+            // console.log(typeof(node));
             var text = node.textContent;
             var reg = /\{\{(.*)\}\}/;
 
@@ -38,6 +43,7 @@ Compile.prototype = {
                 me.compile(node);
 
             } else if (me.isTextNode(node) && reg.test(text)) {
+                //console.log(RegExp.$1);//输出getHelloWord
                 me.compileText(node, RegExp.$1);
             }
 
@@ -70,6 +76,7 @@ Compile.prototype = {
     },
 
     compileText: function(node, exp) {
+       // console.log(exp);//输出getHelloWord
         compileUtil.text(node, this.$vm, exp);
     },
 
@@ -94,7 +101,7 @@ Compile.prototype = {
 // 指令处理集合
 var compileUtil = {
     text: function(node, vm, exp) {
-         
+        // console.log(node);
         this.bind(node, vm, exp, 'text');
     },
 
@@ -104,7 +111,7 @@ var compileUtil = {
 
     model: function(node, vm, exp) {
         this.bind(node, vm, exp, 'model');
-
+       console.log(node);
         var me = this,
             val = this._getVMVal(vm, exp);
         node.addEventListener('input', function(e) {
