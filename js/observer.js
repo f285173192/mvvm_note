@@ -31,7 +31,7 @@ Observer.prototype = {
             //该属性描述符才能够被改变，同时该属性也能从对应的对象上被删除。默认为 false。
             get: function() {
                 //console.log(Dep.target);//Object { cb: bind(), vm: {…}, expOrFn: "someStr", depIds: {}, getter: parseGetter() }
-                if (Dep.target) {
+                if (Dep.target) {  //compile new wathcer时候，调用watcher get 方法获取data数据值，observer defineReactive get能接收 watcher 实例 Dep.target
                     dep.depend();
                 }
                 return val;

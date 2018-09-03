@@ -2,6 +2,7 @@ function Watcher(vm, expOrFn, cb) {
     this.cb = cb;
    // console.log(this.cb);//function bind()
     this.vm = vm;
+    //console.log(this.vm);Object { "$options": {…}, _data: {…}, someStr: Getter & Setter, htmlStr: Getter & Setter, child: Getter & Setter, … }
     this.expOrFn = expOrFn;
    // console.log(expOrFn);//someStr child.someStr getHelloWord htmlStr
     this.depIds = {};
@@ -13,6 +14,7 @@ function Watcher(vm, expOrFn, cb) {
     }
 
     this.value = this.get();
+    //console.log(this.value);////hello World! hello World !<span style="color: #f00;">red</span>
 }
 
 Watcher.prototype = {//为Watcher增加方法
@@ -48,8 +50,10 @@ Watcher.prototype = {//为Watcher增加方法
         }
     },
     get: function() {
+       // console.log(this.getter);//function parseGetter()
         Dep.target = this;
         var value = this.getter.call(this.vm, this.vm);
+       // console.log(value);//hello World! hello World !<span style="color: #f00;">red</span>
         Dep.target = null;
         return value;
     },

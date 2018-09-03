@@ -138,6 +138,7 @@ var compileUtil = {
         updaterFn && updaterFn(node, this._getVMVal(vm, exp));
 
         new Watcher(vm, exp, function(value, oldValue) {
+            //console.log(Dep.target);//无输出
             updaterFn && updaterFn(node, value, oldValue);
         });
     },
@@ -195,6 +196,8 @@ var updater = {
     },
 
     modelUpdater: function(node, value, oldValue) {
+       // console.log(node);//<input v-model="someStr" type="text"> <input v-model="child.someStr" type="text">
         node.value = typeof value == 'undefined' ? '' : value;
+    
     }
 };
